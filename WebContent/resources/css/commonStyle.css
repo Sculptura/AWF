@@ -1,0 +1,94 @@
+@media screen and (min-width: 601px) {
+	.ui-widget, .ui-widget .ui-widget { .ui-widget , .ui-widget .ui-widget {
+		font-size:14px!important;
+		
+	}
+	.ui-widget .ui-widget-content {
+		font-size: 12px !important;
+	}
+	.ui-selectonemenu .ui-selectonemenu-label {
+		font-size: 14px !important;
+	}
+	
+	.loginTextZ {
+		width: 40%;
+	}
+}
+
+}
+@media screen and (max-width: 601px) {
+	.ui-widget, .ui-widget .ui-widget {
+		font-size: 18px !important;
+	}
+	.ui-widget .ui-widget-content {
+		font-size: 15px !important;
+	}
+	.ui-selectonemenu .ui-selectonemenu-label {
+		font-size: 18px !important;
+	}
+	.subtextLabelZ {
+		font-size: 12px;
+	}
+	.subtextValueZ {
+		font-size: 14px;
+	}
+	.plateZ {
+		font-weight: 800;
+		font-size: 22px;
+	}
+	.cleanStatusZ .ui-selectonemenu-label {
+		font-size: 14px !important;
+	}
+	
+}
+
+.ui-widget .ui-widget-content {
+	padding: 0px !important;
+}
+
+.loginTextZ {
+	border-width: 0 0 1px 0;
+	background: transparent;
+}
+
+#ajaxStatusDlg .ui-widget .ui-widget-content .corner-all {
+	display: none;
+}
+
+.ajaxStatusDlg, .ui-widget .ajaxStatusDlg {
+	box-shadow: none;
+}
+
+.ui-layout-center  .ui-paginator .ui-paginator-page, .ui-layout-center .ui-paginator .ui-paginator-next,
+	.ui-layout-center  .ui-paginator .ui-paginator-last, .ui-layout-center  .ui-paginator .ui-paginator-first,
+	.ui-layout-center  .ui-paginator .ui-paginator-prev, .ui-paginator .ui-paginator-page,
+	.ui-paginator .ui-paginator-next, .ui-paginator .ui-paginator-last,
+	.ui-paginator .ui-paginator-first, .ui-paginator .ui-paginator-prev,
+	.ui-widget .ui-widget-content .ui-paginator .ui-paginator-page,
+	.ui-widget .ui-widget-content .ui-paginator .ui-paginator-next,
+	.ui-widget .ui-widget-content .ui-paginator .ui-paginator-last,
+	.ui-widget .ui-widget-content .ui-paginator .ui-paginator-first,
+	.ui-widget .ui-widget-content .ui-paginator .ui-paginator-prev,
+	.ui-dialog-content .ui-widget-content .ui-paginator .ui-paginator-page,
+	.ui-dialog-content .ui-widget-content .ui-paginator .ui-paginator-next,
+	.ui-dialog-content .ui-widget-content .ui-paginator .ui-paginator-last,
+	.ui-dialog-content .ui-widget-content .ui-paginator .ui-paginator-first,
+	.ui-dialog-content .ui-widget-content .ui-paginator .ui-paginator-prev,
+	.ui-dialog .ui-widget-content .ui-paginator .ui-paginator-page,
+	.ui-dialog .ui-widget-content .ui-paginator .ui-paginator-next,
+	.ui-dialog .ui-widget-content .ui-paginator .ui-paginator-last,
+	.ui-dialog .ui-widget-content .ui-paginator .ui-paginator-first,
+	.ui-dialog .ui-widget-content .ui-paginator .ui-paginator-prev,
+	.ui-datatable .ui-paginator .ui-paginator-page, .ui-datatable .ui-paginator .ui-paginator-next,
+	.ui-datatable .ui-paginator .ui-paginator-first, .ui-datatable .ui-paginator .ui-paginator-prev,
+	.ui-paginator .ui-paginator-page, .ui-paginator .ui-paginator-next,
+	.ui-paginator .ui-paginator-last, .ui-paginator .ui-paginator-first,
+	.ui-paginator .ui-paginator-prev {
+	min-width: 18px;
+	min-height: 18px;
+	margin: auto;
+	background: transparent;
+	font-size: 14px;
+	font-weight: bold;
+	text-align: center;
+}

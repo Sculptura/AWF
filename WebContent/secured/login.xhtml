@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:pe="http://primefaces.org/ui/extensions">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+<h:head>
+	<title>AWF</title>
+	<h:outputStylesheet name="css/commonStyle.css" />
+</h:head>
+
+<h:body>
+	<center>
+		<h:form id="loginForm">
+			<p:growl id="payrollStat" severity="warn,info,error" life="4000"
+				showDetail="true" />
+
+
+			<div class="ui-fluid">
+				<p:panelGrid columns="1" styleClass="ui-panelgrid-blank ui-fluid"
+					layout="grid" columnClasses="ui-g-12 ui-md-12,ui-g-12 ui-md-12">
+
+					<p:commandButton id="infoBtn" value="AWF | 13.12.18 - 14.06.19"
+						styleClass="loginTextZ" process="@this"
+						style="text-align:center;font-size:16px;font-weight: 600;padding:0;border:none; ">
+					</p:commandButton>
+
+					<h:outputText
+						style="font-size:16px;font-weight: 600;color:#434159;"
+						value="Username" />
+					<p:inputText id="username" value="#{usersMB.userName}"
+						styleClass="loginTextZ" />
+
+					
+
+					<h:outputText
+						style="font-size:16px;font-weight: 600;color:#434159;"
+						value="Password" />
+					<p:password styleClass="ip" id="password"
+						value="#{usersMB.password}" />
+
+
+					<p:commandButton ajax="false" id="loginBtn" value="Login"
+						action="#{usersMB.checkAuthentication}" />
+
+
+					<p:defaultCommand target="loginBtn" />
+				</p:panelGrid>
+			</div>
+
+
+
+		</h:form>
+	</center>
+</h:body>
+</html>

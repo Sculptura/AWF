@@ -1,0 +1,259 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:pe="http://primefaces.org/ui/extensions">
+
+
+
+<h:body>
+
+	<h:outputStylesheet>
+.contactStyle .ui-dialog .ui-widget-content {
+	padding: 0;
+}
+
+.msgGridZ .ui-widget-content.ui-datagrid-content {
+	border: none; 
+	padding: 0;
+}
+
+</h:outputStylesheet>
+
+	<script type="text/javascript">
+   function scrollToBottom() {
+    $('.ui-scrollpanel-native').scrollTop(100000)   
+          
+	}   
+</script>
+
+
+	<p:dialog id="messengerPopup" dynamic="false" widgetVar="internalIMDlg"
+		header="Messenger" onShow="internalIMDlg.toggleMaximize();"
+		onHide="internalIMDlg.toggleMaximize();" resizable="false"
+		appendTo="@(body)" modal="true"> 
+
+		<p:ajax event="close" listener="#{imessengerMB.messengerClosed}" />
+
+
+		<h:form id="internalIMForm">
+
+
+			<p:growl id="deleteStat" severity="info" life="7000"
+				showDetail="true" />
+			<p:growl id="payrollStat" severity="info" life="4000"
+				showDetail="true" />
+
+			<p:panel id="internalIMDetails" styleClass="panelZ">
+
+				<div class="ui-fluid">
+					<p:panelGrid columns="2"
+						columnClasses="ui-g-4,ui-g-8" layout="grid"
+						styleClass="ui-panelgrid-blank">
+
+						<p:panel header="Conversations">
+
+							<f:facet name="header">
+								<p:panelGrid columns="2"
+									columnClasses="ui-g-8,ui-g-4" layout="grid"
+									styleClass="ui-panelgrid-blank">
+									<h:outputText value="Conversations"></h:outputText>
+									<p:commandButton value="Contacts" process="@this"
+										actionListener="#{imessengerMB.fetchAllUsers}"
+										icon="fa fa-plus" oncomplete="contactListDlg.show();">
+									</p:commandButton>
+								</p:panelGrid>
+							</f:facet>
+
+							<p:scrollPanel mode="native"
+								style="height:400px;border:none;margin-left:-11px;margin-right:-11px;"
+								id="recentMsgsScrollPanel">
+
+								<p:dataGrid id="recentGrid" styleClass="msgGridZ"
+									value="#{imessengerMB.recentConversations}" var="recentMsg"
+									columns="1" emptyMessage="no recent conversations.">
+
+									
+										<p:commandLink id="recentContactLink"
+											style="text-decoration: none;" process="@this"
+											actionListener="#{imessengerMB.openConversation(recentMsg)}">
+
+											<h:panelGrid columns="2" cellpadding="1" cellspacing="1"
+												width="100%;">
+												<h:panelGrid columns="2">
+													<h:panelGrid id="recentGridImg" cellpadding="0"
+														cellspacing="0"
+														style="height:46px;background:transparent;width:44px;position:relative;
+											box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.2), 0 2px 16px 0 rgba(0, 0, 0, 0.19);">
+														<p:graphicImage id="userProfile" width="44px;"
+															cache="false" height="46px;"
+															
+															style=" position: absolute; left: 0px;top: 0px;
+						box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.2), 0 2px 16px 0 rgba(0, 0, 0, 0.19);">
+														</p:graphicImage>
+
+													</h:panelGrid>
+
+
+													<h:panelGrid columns="1" style="float:left;">
+
+														<h:outputText
+															style="text-decoration: none;font-weight:600;"
+															value="#{recentMsg.userName}" />
+														<h:outputText style="text-decoration: none;color:#a7a7a7;"
+															value="#{recentMsg.messagebody.length() gt 45 ? recentMsg.messagebody.substring(0,45).concat('...') : recentMsg.messagebody}" />
+													</h:panelGrid>
+												</h:panelGrid>
+
+												<h:outputText
+													style="text-decoration: none;color:#a7a7a7;font-size:8px;float:right;"
+													value="#{recentMsg.messagedatetime}" >
+													<f:convertDateTime pattern="EEE, d MMM yyyy HH:mm"/>
+													</h:outputText>
+
+											</h:panelGrid>
+										</p:commandLink>
+									
+								</p:dataGrid>
+							</p:scrollPanel>
+
+
+
+						</p:panel>
+						<p:panel header="Thread">
+
+							<f:facet name="header">
+
+								<p:panelGrid columns="3" layout="grid"
+									columnClasses="ui-g-8,ui-g-2,ui-g-2"
+									styleClass="ui-panelgrid-blank">
+
+									<h:panelGrid>
+										<h:outputText id="msgHeaderName"
+											value="#{imessengerMB.headerName} " style="font-weight:600;" />
+										<h:outputText id="msgHeaderStatus"
+											value="#{imessengerMB.headerStatus}"
+											style="font-size:10px;color:#ffffff;" />
+									</h:panelGrid>
+
+									<p:commandButton value="Refresh" process="@this"
+										icon="fa fa-refresh"
+										actionListener="#{imessengerMB.refreshMessageThread}">
+									</p:commandButton>
+
+									<p:commandButton icon="fa fa-trash-o" process="@this" style="background:#dd8c69;"
+										value="Delete" label="Delete Conversation"
+										actionListener="#{imessengerMB.deleteConversation}">
+									</p:commandButton>
+								</p:panelGrid>
+
+
+							</f:facet>
+
+							<p:scrollPanel mode="native" widgetVar="scrollPnl"
+								style="height:300px;border:none;" id="threadScrollPanel">
+
+								<p:dataGrid id="threadGrid" columns="1" rowIndexVar="rowNum"
+									styleClass="msgGridZ" value="#{imessengerMB.imessagesList}"
+									var="imessage">
+
+									<p:column rendered="false"> #{rowNum+1}</p:column>
+
+									<p:panel id="msgThread"
+										style="border:none;min-width:250px;max-width:350px; 
+  						word-wrap: break-word;overflow-wrap: break-word;
+						#{imessage.messageFloatLeft ? 'float:right;background:#236787;' : 'float:left;background:#37a2d4;'}">
+										<h:outputText style="color:#ededed;"
+											value="#{imessage.messagebody}" />
+										<h:outputText style="font-size:8px;float:right;color:#ededed;"
+											value="#{imessage.messagedatetime}">
+											<f:convertDateTime pattern="MMM d, yyyy h:mm" />
+										</h:outputText>
+									</p:panel>
+								</p:dataGrid>
+							</p:scrollPanel>
+
+							<p:inputTextarea id="textEntry" widgetVar="editor2" rows="4"
+								value="#{imessengerMB.imessengerDBO.messagebody}"
+								placeholder="Enter text here">
+								<p:ajax event="change" process="@this" partialSubmit="true"
+									listener="#{imessengerMB.deactivator}"></p:ajax>
+							</p:inputTextarea>
+
+
+
+							<p:commandButton id="sendBtn" value="Send" process="@this" 
+								actionListener="#{imessengerMB.sendMessage}" icon="fa fa-send"
+								disabled="#{imessengerMB.sendBtn}">
+							</p:commandButton>
+
+							<p:defaultCommand target="sendBtn" />
+						</p:panel>
+					</p:panelGrid>
+				</div>
+
+			</p:panel>
+			<p:panelGrid>
+
+			</p:panelGrid>
+
+			<p:dialog widgetVar="contactListDlg" modal="true" appendTo="@(body)"
+				styleClass="contactStyle" header="Select Contact" resizable="false">
+				<p:scrollPanel mode="native"
+					style="height:500px;border:none;width:400px;margin-left:-11px;margin-right:-11px;"
+					id="contactScrollPanel">
+
+					<p:dataGrid id="contactGrid" emptyMessage="no contacts found."
+						styleClass="msgGridZ" value="#{imessengerMB.usersList}" var="user"
+						columns="1">
+						<p:panel style="padding:0;border:none;">
+							<p:commandLink id="contactLink" style="text-decoration: none;"
+								update="contactLink" process="@this"
+								actionListener="#{imessengerMB.beginConversation(user)}"
+								onclick="contactListDlg.hide();">
+								<h:panelGrid columns="2" cellpadding="1" cellspacing="1">
+
+									<h:panelGrid id="gridImg" cellpadding="0" cellspacing="0"
+										style="height:46px;background:transparent;width:44px;position:relative;
+				box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.2), 0 2px 16px 0 rgba(0, 0, 0, 0.19);">
+										<p:graphicImage id="userProfile" width="44px;" cache="false"
+											height="46px;"
+											style=" position: absolute; left: 0px;top: 0px;
+						box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.2), 0 2px 16px 0 rgba(0, 0, 0, 0.19);">
+										</p:graphicImage>
+
+									</h:panelGrid>
+
+									<h:panelGrid columns="1">
+
+										<h:outputText style="text-decoration: none;font-weight:600;"
+											value="#{user.username}" />
+										
+
+									</h:panelGrid>
+
+								</h:panelGrid>
+
+							</p:commandLink>
+						</p:panel>
+					</p:dataGrid>
+				</p:scrollPanel>
+				<p:panelGrid>
+					<p:commandButton value="close" process="@this"
+						styleClass="rightGridBtnZ" icon="fa fa-close"
+						onclick="PF('contactListDlg').hide();"></p:commandButton>
+
+				</p:panelGrid>
+			</p:dialog>
+
+
+		</h:form>
+	</p:dialog>
+</h:body>
+</html>

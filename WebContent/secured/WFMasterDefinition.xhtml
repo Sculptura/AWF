@@ -1,0 +1,289 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:pe="http://primefaces.org/ui/extensions">
+
+
+<h:outputStylesheet>
+
+ .stepGrid .ui-widget {
+ 	border:none;
+ }
+ 
+ .notMenu .ui-selectonemenu-label .ui-inputfield {    
+	background:black;
+	color:black;
+	font-size:20px;
+}
+ 
+ .notMenu .ui-selectonemenu-trigger {
+ 	
+ 	display:none;
+ 	
+ 
+ }
+ 			
+</h:outputStylesheet>
+
+<h:body>
+
+	<p:dialog id="wfdefpopup" widgetVar="wfdefDlg"
+		header="Work Flow Definition" onHide="wfdefDlg.toggleMaximize();"
+		onShow="wfdefDlg.toggleMaximize();">
+
+		<h:form id="wfmasterForm">
+
+			<p:growl id="payrollStat" severity="info" life="4000"
+				showDetail="true" />
+
+			<p:panel id="wfdefpanel" styleClass="panelZ">
+
+				<div class="ui-fluid">
+
+					<p:panel toggleable="true">
+						<f:facet name="header">
+							<h:outputText value="#{wfmasterMB.workflow.title}"></h:outputText>
+						</f:facet>
+
+
+						<p:panelGrid columns="2" layout="grid"
+							columnClasses="ui-g-12 ui-md-2,ui-g-12 ui-md-10"
+							styleClass="ui-panelgrid-blank">
+
+							<h:outputText value="Title" />
+							<p:inputText value="#{wfmasterMB.workflow.title}">
+								<p:ajax event="change" process="@this" partialSubmit="true"
+									listener="#{wfmasterMB.deactivator}"></p:ajax>
+							</p:inputText>
+
+
+						</p:panelGrid>
+
+
+
+						<p:panelGrid columns="4"
+							columnClasses="ui-g-6 ui-md-2,ui-g-6 ui-md-2,ui-g-6 ui-md-2,ui-g-6 ui-md-2" layout="grid"
+							styleClass="ui-panelgrid-blank">
+
+							<h:outputText value="Starts from" />
+							<p:calendar id="dateF" value="#{wfmasterMB.workflow.startdate}"
+								placeholder="dd/MM/yyyy" pattern="dd/MM/yyyy" timeInput="true">
+								<p:ajax event="dateSelect" process="@this" partialSubmit="true"
+									listener="#{wfmasterMB.validateDates}"></p:ajax>
+								<p:ajax event="change" process="@this" partialSubmit="true"
+									listener="#{wfmasterMB.validateDates}"></p:ajax>
+							</p:calendar>
+
+							<h:outputText value="Due on" />
+							<p:calendar id="dateT" value="#{wfmasterMB.workflow.enddate}"
+								placeholder="dd/MM/yyyy" pattern="dd/MM/yyyy">
+								<p:ajax event="dateSelect" process="@this" partialSubmit="true"
+									listener="#{wfmasterMB.validateDates}"></p:ajax>
+								<p:ajax event="change" process="@this" partialSubmit="true"
+									listener="#{wfmasterMB.validateDates}"></p:ajax>
+							</p:calendar>
+
+
+							<h:outputText value="Applies To" />
+							<p:selectOneMenu value="#{wfmasterMB.workflow.appliesto}"
+								effect="fade" filter="true" filterMatchMode="startsWith"
+								filterPlaceholder="Search Process" autoWidth="true">
+								<f:selectItem itemLabel="Select one" />
+								<f:selectItems value="#{wfmasterMB.processList}" var="process"
+									itemLabel="#{process.name}" itemValue="#{process.code}">
+								</f:selectItems>
+
+								<p:ajax event="change" process="@this" partialSubmit="true"
+									listener="#{wfmasterMB.deactivator}"></p:ajax>
+
+							</p:selectOneMenu>
+
+						</p:panelGrid>
+
+						<p:spacer />
+
+						<p:panelGrid columns="2" layout="grid" 
+							columnClasses="ui-g-12 ui-md-2,ui-g-12 ui-md-10" styleClass="ui-panelgrid-blank">
+
+							<h:outputText value="Description" />
+							<p:inputTextarea value="#{wfmasterMB.workflow.description}"
+								rows="5">
+								<p:ajax event="change" process="@this" partialSubmit="true"
+									listener="#{wfmasterMB.deactivator}"></p:ajax>
+							</p:inputTextarea>
+						</p:panelGrid>
+
+						<p:spacer />
+
+						<p:panelGrid columns="4"
+							columnClasses="ui-g-4 ui-md-2,ui-g-8 ui-md-2,ui-g-4 ui-md-2,ui-g-8 ui-md-2" layout="grid" 
+							styleClass="ui-panelgrid-blank">
+
+							<h:outputText value="Flow" />
+							<p:selectOneMenu value="#{wfmasterMB.workflow.flow}">
+								<f:selectItem itemLabel="Select one" />
+								<f:selectItem itemLabel="Sequential" itemValue="S" />
+								<f:selectItem itemLabel="Random" itemValue="R" />
+								<p:ajax event="change" process="@this"
+									listener="#{wfmasterMB.deactivator}" partialSubmit="true"></p:ajax>
+							</p:selectOneMenu>
+
+
+							<h:outputText value="Status" />
+							<p:selectOneMenu value="#{wfmasterMB.workflow.status}"
+								effect="fade" filter="true" filterMatchMode="startsWith"
+								filterPlaceholder="Search Status">
+								<f:selectItem itemLabel="Select one" />
+								<f:selectItems value="#{wfmasterMB.statusList}" var="stat"
+									itemLabel="#{stat.name}" itemValue="#{stat.code}">
+
+								</f:selectItems>
+
+								<p:ajax event="change" process="@this" partialSubmit="true"
+									listener="#{wfmasterMB.deactivator}"></p:ajax>
+
+							</p:selectOneMenu>
+
+							<h:outputText value="Steps" />
+							<h:panelGroup>
+								<div class="ui-inputgroup">
+
+
+									<p:inputNumber value="#{wfmasterMB.workflow.stepcount}"
+										placeholder="count" inputStyle="text-align:center;"
+										decimalPlaces="0" maxValue="99">
+										<p:ajax event="change" process="@this"
+											listener="#{wfmasterMB.deactivator}" partialSubmit="true"></p:ajax>
+									</p:inputNumber>
+
+									<p:inputText value="#{wfmasterMB.workflow.stepsequence}"
+										style="text-align:center;" maxlength="5"
+										placeholder="sequence">
+										<p:ajax event="change" process="@this"
+											listener="#{wfmasterMB.deactivator}" partialSubmit="true"></p:ajax>
+									</p:inputText>
+								</div>
+							</h:panelGroup>
+
+
+
+							<h:outputText value="Rating" />
+							<p:rating value="#{wfmasterMB.workflow.rating}">
+								<p:ajax event="rate" process="@this"
+									listener="#{wfmasterMB.deactivator}" partialSubmit="true"></p:ajax>
+								<p:ajax event="cancel" process="@this"
+									listener="#{wfmasterMB.deactivator}" partialSubmit="true"></p:ajax>
+
+							</p:rating>
+
+						</p:panelGrid>
+
+					</p:panel>
+
+
+					<p:panel toggleable="true" style="padding:none;"
+						styleClass="stepPanel"
+						header="Steps -  #{wfmasterMB.workflow.stepcount}"
+						collapsed="false">
+
+						<p:toolbar>
+							<f:facet name="right">
+								<p:commandButton value="Add" icon="fa fa-plus" process="@this"
+									actionListener="#{wfmasterMB.initiateStep}"></p:commandButton>
+							</f:facet>
+						</p:toolbar>
+
+						<p:dataGrid id="stepGrid" styleClass="stepGrid"
+							rowIndexVar="stepRowNum" value="#{wfmasterMB.workflow.steps}"
+							var="step" columns="1" emptyMessage="no steps found.">
+
+
+							<p:commandLink id="stepLink" style="text-decoration: none;"
+								process="@this" actionListener="#{wfmasterMB.selectStep(step)}">
+
+								<p:column rendered="false">
+									<h:outputText style="font-size:16px;font-weight:700;"
+										value="#{stepRowNum+1}" />
+								</p:column>
+
+								<p:panel id="stepDetails">
+
+									<f:facet name="header">
+										<h:outputText style="font-weight:700;"
+											value="#{stepRowNum+1}. " />
+										<h:outputText value=" #{step.title}" />
+									</f:facet>
+
+
+
+									<p:panelGrid columns="1" layout="grid"
+										styleClass="ui-panelgrid-blank">
+										<h:outputText value="#{step.description}" />
+									</p:panelGrid>
+
+									<p:panelGrid columns="6"
+										columnClasses="ui-g-6 ui-md-2, ui-g-6 ui-md-2, ui-g-6 ui-md-2, ui-g-6 ui-md-2, ui-g-6 ui-md-2, ui-g-6 ui-md-2"
+										layout="grid" styleClass="ui-panelgrid-blank">
+
+										<h:outputText value="Status: " />
+										<p:selectOneMenu id="statusMenu" value="#{step.statuscode}"
+											disabled="true" autoWidth="false"
+											style="border:none;opacity:1;font-weight:600;color:#27638e;"
+											styleClass="notMenu">
+
+											<f:selectItems value="#{wfmasterMB.statusList}" var="status"
+												itemLabel="#{status.name}" itemValue="#{status.code}">
+
+											</f:selectItems>
+										</p:selectOneMenu>
+
+										<p:selectOneMenu value="#{step.markerlabel}" disabled="true"
+											styleClass="notMenu" autoWidth="false"
+											style="border:none;opacity:1;">
+
+											<f:selectItems value="#{wfmasterMB.statusList}" var="status"
+												itemLabel="#{status.name} By" itemValue="#{status.code}">
+
+											</f:selectItems>
+										</p:selectOneMenu>
+
+
+										<h:outputText value="#{step.markedby}"
+											style="font-weight:600;color:#27638e;" />
+
+
+										<p:knob max="100" disabled="true" labelTemplate="{value}%"
+											lineCap="round" value="#{step.percentage}" height="55"
+											width="55" foregroundColor="#9adb63" />
+
+
+									</p:panelGrid>
+
+								</p:panel>
+							</p:commandLink>
+						</p:dataGrid>
+					</p:panel>
+
+				</div>
+			</p:panel>
+			<p:panelGrid columns="2" layout="grid" columnClasses="ui-g-6,ui-g-6"
+				styleClass="ui-panelgrid-blank ui-fluid">
+				<p:commandButton value="Save" icon="fa fa-save"
+					styleClass="rightGridBtnZ" style="background:#bfdb57;border:none;"
+					process="@this" actionListener="#{wfmasterMB.beforeSaveWorflow}"></p:commandButton>
+
+				<p:commandButton value="Delete" icon="fa fa-save"
+					styleClass="rightGridBtnZ" style="background:#dd8c69;border:none;"
+					process="@this" actionListener="#{wfmasterMB.deleteWorkflow}"></p:commandButton>
+			</p:panelGrid>
+
+		</h:form>
+
+
+
+	</p:dialog>
+</h:body>
+</html>

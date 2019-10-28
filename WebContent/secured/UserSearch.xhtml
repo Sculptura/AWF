@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+
+<p:dialog dynamic="false" id="userSearch" 
+	appendTo="@(body)" styleClass="dialogZ" resizable="false"
+	widgetVar="userSearchDlg" modal="true">
+	<h:form id="userSearchForm">
+
+		<p:dataTable id="userTable" rows="5" paginator="true" widgetVar="userTable"
+			paginatorPosition="top" value="#{usersMB.userList}" var="user"
+			style="width:500px; margin:-11px -11px auto -11px;"
+			selectionMode="single" selection="#{usersMB.user}"
+			filteredValue="#{usersMB.userListFilter}" rowKey="#{user.usercode}"
+			resizableColumns="true">
+			
+			<f:facet name="header">
+				<p:columnGroup>
+					<p:outputPanel style="padding-top:2px;padding-bottom:2px;">
+						<h:outputText style="font-size:12px;" value="Search User : " />
+						<p:inputText id="globalFilter"
+							onkeyup="PF('userTable').filter();" style="width:70%"
+							placeholder="Enter keyword" />
+					</p:outputPanel>
+				</p:columnGroup>
+			</f:facet>
+			
+		
+
+			<p:ajax event="rowSelect" process="@this"
+				listener="#{wfmasterMB.selectUser}">
+			</p:ajax>
+
+			<p:column headerText="User ID" filterBy="#{user.userid}">
+				<h:outputText value="#{user.usercode}" />
+			</p:column>
+
+			<p:column headerText="User Name" filterBy="#{user.username}">
+				<h:outputText value="#{user.username}" />
+			</p:column>
+
+		</p:dataTable>
+		<p:panelGrid>
+			<p:commandButton value="Cancel" onclick="PF('userSearchDlg').hide()"
+				icon="fa fa-remove" styleClass="rightGridBtnZ">
+			</p:commandButton>
+
+			<p:commandButton value="OK" process="@this"
+				oncomplete="PF('userSearchDlg').hide()"
+				actionListener="#{wfmasterMB.addUsersToStep}" icon="fa fa-check"
+				styleClass="rightGridBtnZ">
+			</p:commandButton>
+		</p:panelGrid>
+	</h:form>
+</p:dialog>
+
+
+</html>
+

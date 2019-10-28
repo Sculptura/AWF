@@ -1,0 +1,329 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:pe="http://primefaces.org/ui/extensions">
+
+<h:head>
+
+</h:head>
+<h:body>
+
+
+	<p:dialog id="steppopup" widgetVar="stepDlg"
+		header="#{wfmasterMB.workflow.title} :   STEP - #{wfmasterMB.stepSelected.serialno}"
+		onHide="stepDlg.toggleMaximize();" onShow="stepDlg.toggleMaximize();">
+
+		<h:form id="stepForm">
+			<p:growl id="payrollStat" severity="info,warn,error" life="4000"
+				showDetail="true" />
+
+			<p:panel id="steppanel" styleClass="panelZ">
+
+				<div class="ui-fluid">
+
+					<p:panelGrid columns="2"
+						columnClasses="ui-g-12 ui-md-4,ui-g-12 ui-md-8" layout="grid"
+						styleClass="ui-panelgrid-blank">
+
+						<p:panelGrid columns="1" layout="grid" columnClasses="ui-g-12"
+							styleClass="ui-panelgrid-blank">
+
+
+							<p:panelGrid columns="1" layout="grid" columnClasses="ui-g-12"
+								styleClass="ui-panelgrid-blank">
+								<p:inputText value="#{wfmasterMB.stepSelected.title}"
+									style="font-weight:700;" placeholder="Title">
+									<p:ajax event="change" process="@this" partialSubmit="true"
+										listener="#{wfmasterMB.deactivator}"></p:ajax>
+								</p:inputText>
+							</p:panelGrid>
+
+
+
+							<p:panelGrid columns="2" layout="grid"
+								columnClasses="ui-g-12 ui-md-4,ui-g-12 ui-md-8"
+								styleClass="ui-panelgrid-blank">
+
+
+								<h:outputText value="Starts from" />
+								<p:calendar value="#{wfmasterMB.stepSelected.startdate}"
+									placeholder="dd/MM/yyyy" pattern="dd/MM/yyyy HH:mm:ss">
+									<p:ajax event="dateSelect" process="@this"
+										listener="#{wfmasterMB.deactivator}" partialSubmit="true"></p:ajax>
+									<p:ajax event="change" process="@this"
+										listener="#{wfmasterMB.deactivator}" partialSubmit="true"></p:ajax>
+								</p:calendar>
+
+								<h:outputText value="Due on" />
+								<p:calendar value="#{wfmasterMB.stepSelected.enddate}"
+									placeholder="dd/MM/yyyy" pattern="dd/MM/yyyy HH:mm:ss">
+									<p:ajax event="dateSelect" process="@this"
+										listener="#{wfmasterMB.deactivator}" partialSubmit="true"></p:ajax>
+									<p:ajax event="change" process="@this"
+										listener="#{wfmasterMB.deactivator}" partialSubmit="true"></p:ajax>
+								</p:calendar>
+
+
+
+
+								<h:outputText value="Percentage" />
+								<p:inputNumber value="#{wfmasterMB.stepSelected.percentage}">
+									<p:ajax event="change" process="@this"
+										listener="#{wfmasterMB.beforeStepStatusUpdate}"
+										partialSubmit="true"></p:ajax>
+								</p:inputNumber>
+
+
+								<h:outputText value="Status" />
+								<p:selectOneMenu value="#{wfmasterMB.stepSelected.statuscode}"
+									effect="fade" filter="true" filterMatchMode="startsWith"
+									filterPlaceholder="Search Status" autoWidth="true">
+									<f:selectItem itemLabel="Select one" />
+									<f:selectItems value="#{wfmasterMB.statusList}" var="status"
+										itemLabel="#{status.name}" itemValue="#{status.code}">
+
+									</f:selectItems>
+
+									<p:ajax event="change" process="@this" partialSubmit="true"
+										listener="#{wfmasterMB.beforeStepStatusUpdate}"></p:ajax>
+
+								</p:selectOneMenu>
+
+								<h:outputText value="Marker Label" />
+								<p:selectOneMenu effect="fade" filter="true"
+									value="#{wfmasterMB.stepSelected.markerlabel}"
+									filterMatchMode="startsWith" filterPlaceholder="Search Status"
+									autoWidth="true">
+									<f:selectItem itemLabel="Select one" />
+									<f:selectItems value="#{wfmasterMB.statusList}" var="status"
+										itemLabel="#{status.name}" itemValue="#{status.code}">
+									</f:selectItems>
+
+									<p:ajax event="change" process="@this" partialSubmit="true"
+										listener="#{wfmasterMB.deactivator}"></p:ajax>
+
+								</p:selectOneMenu>
+
+								<h:outputText value="Holder" />
+								<h:panelGroup>
+									<div class="ui-inputgroup">
+
+										<p:inputText id="holder"
+											value="#{wfmasterMB.stepSelected.markedby}">
+											<p:ajax event="change" process="@this" partialSubmit="true"
+												listener="#{wfmasterMB.deactivator}"></p:ajax>
+										</p:inputText>
+										<p:commandButton id="holderBtn" value="Add" icon="fa fa-plus"
+											process="@this" actionListener="#{wfmasterMB.prepUsers}"></p:commandButton>
+									</div>
+								</h:panelGroup>
+
+
+								<h:outputText value="Rating" />
+								<p:rating value="#{wfmasterMB.stepSelected.rating}">
+									<p:ajax event="rate" process="@this"
+										listener="#{wfmasterMB.deactivator}" partialSubmit="true"></p:ajax>
+									<p:ajax event="cancel" process="@this"
+										listener="#{wfmasterMB.deactivator}" partialSubmit="true"></p:ajax>
+
+								</p:rating>
+							</p:panelGrid>
+						</p:panelGrid>
+
+						<p:panelGrid columns="1" layout="grid"
+							styleClass="ui-panelgrid-blank">
+							<p:scrollPanel mode="native" style="height:200px;">
+
+
+								<p:dataGrid id="contriPanel" columns="4" style="border:none;"
+									styleClass="stepGrid"
+									value="#{wfmasterMB.stepSelected.references}" var="ref"
+									circular="true" responsive="true">
+
+									<f:facet name="header">
+										<h:outputText value="CONTRIBUTORS" style="font-size:14px;" />
+
+										<p:toolbar>
+											<f:facet name="right">
+												<p:commandButton id="contriBtn" value="Add"
+													icon="fa fa-plus" process="@this"
+													actionListener="#{wfmasterMB.prepUsers}"></p:commandButton>
+											</f:facet>
+										</p:toolbar>
+
+									</f:facet>
+
+									<p:panelGrid columns="1" layout="grid"
+										rendered="#{ref.type.equals('U') ? true : false}"
+										style="text-align:center;" styleClass="ui-panelgrid-blank">
+
+										<p:graphicImage url="/resources/images/icons/avatar2.png"
+											height="25px;" width="25px;" />
+
+
+										<h:outputText value="#{ref.refname}" style="font-size:14px;" />
+									</p:panelGrid>
+								</p:dataGrid>
+							</p:scrollPanel>
+
+							<p:scrollPanel mode="native" style="height:200px">
+								<p:inputTextarea value="#{wfmasterMB.stepSelected.description}"
+									rows="10" placeholder="Description">
+									<p:ajax event="change" process="@this" partialSubmit="true"
+										listener="#{wfmasterMB.deactivator}"></p:ajax>
+								</p:inputTextarea>
+							</p:scrollPanel>
+
+						</p:panelGrid>
+					</p:panelGrid>
+
+
+					<p:panelGrid columns="2"
+						columnClasses="ui-g-12 ui-md-8,ui-g-12 ui-md-4" layout="grid"
+						styleClass="ui-panelgrid-blank">
+
+						<p:scrollPanel mode="native" style="height:200px;">
+
+							<p:dataGrid id="contentGrid" styleClass="msgGridZ"
+								headerText="Attachments" responsive="true"
+								style="background:#f6f6f6;"
+								value="#{wfmasterMB.stepSelected.contents}" var="content"
+								columns="#{wfmasterMB.stepSelected.contents.size() > 20 ? wfmasterMB.stepSelected.contents: 20}"
+								emptyMessage="no contents found.">
+
+								<f:facet name="header">
+									<h:outputText value="CONTENT" style="font-size:14px;" />
+									<p:toolbar style="border:none;">
+										<f:facet name="right">
+											<p:commandButton value="Add" icon="fa fa-plus"
+												process="@this" oncomplete="PF('contentDlg').show();"></p:commandButton>
+										</f:facet>
+									</p:toolbar>
+								</f:facet>
+
+								<p:commandLink id="downloadLink" style="text-decoration: none;"
+									process="@this" update="downloadLink"
+									actionListener="#{wfmasterMB.selectContent(content)}">
+
+									<p:column rendered="false"> #{contentRowNum+1}</p:column>
+
+									<h:panelGrid columns="2" cellpadding="1" cellspacing="1">
+										<p:graphicImage
+											url="/resources/images/icons/#{content.filename.substring(content.filename.indexOf('.')+1,content.filename.length())}.png"
+											height="30px;width:30px;" />
+
+										<h:outputText
+											style="text-decoration: none;font-weight:600;color:#808080;"
+											value="#{content.filename.contains('.folder') ? content.filename.substring(0,content.filename.indexOf('.')) : content.filename}" />
+									</h:panelGrid>
+
+								</p:commandLink>
+							</p:dataGrid>
+						</p:scrollPanel>
+
+						<p:scrollPanel mode="native" style="height:200px;">
+							<p:dataGrid id="refGrid" style="border:none;" columns="1"
+								value="#{wfmasterMB.stepSelected.references}" var="ref"
+								emptyMessage="no references found.">
+
+								<f:facet name="header">
+									<h:outputText value="References" style="font-size:14px;" />
+									<p:toolbar style="border:none;">
+										<f:facet name="right">
+											<p:commandButton value="Add" icon="fa fa-plus"
+												process="@this"
+												actionListener="#{wfmasterMB.initiateReference}" />
+										</f:facet>
+									</p:toolbar>
+								</f:facet>
+
+
+								<p:column headerText="" style="border:none;">
+
+									<h:panelGrid columns="2">
+										<p:button
+											icon="#{ref.type.equals('L') ? 'fa fa-globe' : 'fa fa-circle'}"
+											rendered="#{ref.type.equals('U') ? false : true}"
+											style="background:transparent;"
+											value="#{ref.refname} #{ref.refheader}"
+											href="#{ref.reffield}" target="_blank"
+											disabled="#{ref.type.equals('L') ? false : true}" />
+
+										<h:outputText
+											rendered="#{ref.type.equals('C') ? true : false}"
+											value="#{ref.reffield}" />
+									</h:panelGrid>
+								</p:column>
+
+
+
+							</p:dataGrid>
+						</p:scrollPanel>
+					</p:panelGrid>
+
+				</div>
+			</p:panel>
+
+			<p:panelGrid columns="2" layout="grid" columnClasses="ui-g-6,ui-g-6"
+				styleClass="ui-panelgrid-blank ui-fluid">
+				<p:commandButton value="Add to Workflow" icon="fa fa-plus"
+					style="width:200px;border:none;" styleClass="rightGridBtnZ"
+					disabled="#{wfmasterMB.disableStepAdd}" process="@this"
+					actionListener="#{wfmasterMB.insertStepToWorkflow}"></p:commandButton>
+
+
+				<p:commandButton value="Save" icon="fa fa-save"
+					styleClass="rightGridBtnZ"
+					style="background:#bfdb57;border:none;width:200px;" process="@this"
+					actionListener="#{wfmasterMB.updateStep}"></p:commandButton>
+			</p:panelGrid>
+
+			<ui:include src="/secured/ContentAddition.xhtml"></ui:include>
+
+			<p:dialog dynamic="false" id="ref" widgetVar="refDlg" width="600"
+				appendTo="@(body)" styleClass="dialogZ" header="Add Reference"
+				resizable="false">
+				<p:panel id="refpanel" styleClass="panelZ">
+					<div class="ui-fluid">
+						<p:panelGrid columns="1" layout="grid" style="text-align:center;"
+							styleClass="ui-panelgrid-blank">
+							<p:selectOneMenu value="#{wfmasterMB.selectedRef.type}"
+								placeholder="Type">
+
+								<f:selectItem itemLabel="Email" itemValue="E" />
+								<f:selectItem itemLabel="Contact" itemValue="C" />
+								<f:selectItem itemLabel="Link" itemValue="L" />
+
+								<p:ajax event="change" process="@this" partialSubmit="true" />
+							</p:selectOneMenu>
+							<p:inputText value="#{wfmasterMB.selectedRef.refname}"
+								placeholder="Name">
+								<p:ajax event="change" process="@this" partialSubmit="true" />
+							</p:inputText>
+							<p:inputText value="#{wfmasterMB.selectedRef.refheader}"
+								placeholder="Label">
+								<p:ajax event="change" process="@this" partialSubmit="true" />
+							</p:inputText>
+							<p:inputText value="#{wfmasterMB.selectedRef.reffield}"
+								placeholder="Value">
+								<p:ajax event="change" process="@this" partialSubmit="true" />
+							</p:inputText>
+
+						</p:panelGrid>
+					</div>
+				</p:panel>
+				<p:panelGrid>
+					<p:commandButton process="@this" value="Add to References"
+						icon="fa fa-plus" styleClass="rightGridBtnZ"
+						actionListener="#{wfmasterMB.addRefToWFREF}" />
+				</p:panelGrid>
+			</p:dialog>
+
+		</h:form>
+	</p:dialog>
+</h:body>
+
+</html>

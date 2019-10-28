@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:pe="http://primefaces.org/ui/extensions">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+<h:head>
+	<title>CWS</title>
+	<h:outputStylesheet name="css/commonStyle.css" />
+	<h:outputScript name="js/commonValidation.js" />
+
+	<h:outputStylesheet library="text/css">
+	#ajaxStatusDlg .ui-widget .ui-widget-content .corner-all { 
+	display: none;
+	}
+	</h:outputStylesheet>
+</h:head>
+
+<h:body>
+
+	<p:growl widgetVar="stat" life="4000" showDetail="true" />
+	<div class="ui-fluid">
+
+
+		<ui:include src="/secured/header.xhtml"></ui:include>
+
+		<h:form id="centralForm">
+			<ui:include src="/secured/WFMasterView.xhtml" />
+		</h:form>
+
+	</div>
+
+
+
+
+
+	<p:ajaxStatus onstart="PF('statusDialog').show()"
+		oncomplete="PF('statusDialog').hide();" />
+
+	<p:dialog widgetVar="statusDialog" draggable="false" closable="false"
+		modal="false" styleClass="ajaxStatusDlg" appendTo="@(body)"
+		style="background:transparent;padding:0;border:none;"
+		resizable="false" showHeader="false">
+		<center>
+			<h:panelGrid columns="2" cellpadding="0" cellspacing="0">
+
+				<h:outputText value="Processing..."
+					style="font-size:14px;font-weight:700;" />
+				<p:graphicImage url="/resources/images/icons/cc.gif" height="80" />
+
+			</h:panelGrid>
+		</center>
+	</p:dialog>
+
+
+
+
+
+</h:body>
+</html>
+

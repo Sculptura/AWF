@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE generatorConfiguration
+  PUBLIC "-//mybatis.org//DTD MyBatis Generator Configuration 1.0//EN"
+  "http://mybatis.org/dtd/mybatis-generator-config_1_0.dtd">
+
+<generatorConfiguration>
+	<classPathEntry location="D:\DEV\Drivers\sqljdbc_7.2\enu\mssql-jdbc-7.2.1.jre8.jar" /> 
+	<context id="AWF_Tables" targetRuntime="MyBatis3">
+
+		<jdbcConnection driverClass="com.microsoft.sqlserver.jdbc.SQLServerDriver"
+			connectionURL="jdbc:sqlserver://DT\SQL2017" userId="sa" password="421kyn301me@n2019">
+			<!-- <property name="databaseName" value="IM" />    -->
+			 <property name="databaseName" value="AWF" />    
+			
+			
+		</jdbcConnection>
+
+		<javaModelGenerator targetPackage="com.awf.model.orm"
+			targetProject="AWF\src">
+			<property name="enableSubPackages" value="true" />
+			<property name="trimStrings" value="true" />
+		</javaModelGenerator>
+
+		<sqlMapGenerator targetPackage="com.awf.model.mapper.xml"
+			targetProject="AWF\src" />
+
+		<javaClientGenerator targetPackage="com.awf.model.mapper"
+			targetProject="AWF\src" type="XMLMAPPER" />
+
+
+
+		<table schema="dbo" tableName="WFMaster" domainObjectName="WFMaster" />
+		<table schema="dbo" tableName="WFStep" domainObjectName="WFStep" />
+		<table schema="dbo" tableName="WFContent" domainObjectName="WFContent" />
+		<table schema="dbo" tableName="WFReferences" domainObjectName="WFReferences" />
+		<table schema="dbo" tableName="WFStatus" domainObjectName="WFStatus" />
+		<table schema="dbo" tableName="WFProcess" domainObjectName="WFProcess" />
+		<table schema="dbo" tableName="WFUsers" domainObjectName="WFUsers" />
+				 
+	 
+		<table schema ="dbo" tableName = "InternalMessenger" domainObjectName="InternalMessenger" />
+		<table schema ="dbo" tableName = "IMConnections" domainObjectName="IMConnections" />
+
+	
+	</context>
+</generatorConfiguration>

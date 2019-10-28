@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:pe="http://primefaces.org/ui/extensions">
+
+	<p:dialog dynamic="false" resizable="false" width="400"
+		 widgetVar="downloadDlg">
+		<h:form id="docDownloadForm">
+			<h:panelGrid columns="2">
+				<h:graphicImage name="/images/icons/info.png" width="32" height="32" />
+				<h:outputText value="INFO" style="font-size:14px;font-weight:bold;"></h:outputText>
+
+
+			</h:panelGrid>
+
+
+			<p:panel style="border:none;background:transparent;" id="copCatPanel">
+				<h:panelGrid>
+					<h:outputText value="What do you wish to do with this file ?">
+					</h:outputText>
+				</h:panelGrid>
+			</p:panel>
+
+			<p:panelGrid>
+
+				<p:commandButton value="Download" ajax="false" process="@this"
+					style="width:80px;float:right;border-width: 2px;border-top:none;background:transparent;border-right:none;border-left:none;"
+					oncomplete="PF('downloadDlg').hide();" 
+					actionListener="#{wfmasterMB.fileAttachmentDownload}"></p:commandButton>
+
+				<p:commandButton id="yesClose" value="Preview"
+					style="width:80px;float:right;
+		border-width: 2px;border-top:none;background:transparent;border-right:none;border-left:none;"></p:commandButton>
+			</p:panelGrid>
+
+		</h:form>
+	</p:dialog>
+
+
+</html>

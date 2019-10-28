@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:pe="http://primefaces.org/ui/extensions">
+
+<h:body>
+	<h:form id="headerForm">
+
+		<p:growl id="payrollStat" severity="info,warn,error" life="4000"
+			showDetail="true" />
+
+		<p:poll global="false" interval="60" widgetVar="onlinePoll"
+			listener="#{usersMB.checkOnlineStatus}"></p:poll>
+
+		<p:toolbar id="headertool">
+			<f:facet name="left">
+				<p:commandButton id="messengerBtn" value="Messenger"
+					icon="fa fa-paper-plane-o iconZ" process="@this"
+					actionListener="#{imessengerMB.fetchRecentConversations}"
+					oncomplete="PF('internalIMDlg').show();"></p:commandButton>
+			</f:facet>
+			<f:facet name="right">
+
+
+
+				<p:commandButton id="lg" value="Logout"
+					action="#{usersMB.beforeLogout}" />
+
+			</f:facet>
+		</p:toolbar>
+	</h:form>
+</h:body>
+<ui:include src="/secured/IIM.xhtml" />
+
+
+</html>

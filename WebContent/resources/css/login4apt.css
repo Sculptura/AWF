@@ -1,0 +1,87 @@
+
+.ui-state-default, .ui-widget-content .ui-state-default, .ui-widget-header .ui-state-default{
+	background: transparent;
+}
+
+.ui-widget-content .ui-selectonemenu-list  .ui-selectonemenu-items {display:none;}
+
+
+.ui-widget.ui-selectonemenu{background:transparent;padding: 4px 8px;width:385px;}
+.ui-widget .ui-selectonemenu .ui-selectonemenu-items.ui-selectonemenu-list{background:transparent;}
+ .ui-widget .ui-selectonemenu .ui-selectonemenu .ui-inputfield:hover{background:transparent;}
+ .ui-widget .ui-selectonemenu-trigger {border:none;background:transparent;}
+
+input[type="text"]{
+	font-family: Segoe UI; 
+	padding: 8px 12px;
+	width:400px;
+    margin: 4px 0;
+    box-sizing: border-box;
+    
+    background:#c5c5c5;
+    
+    }
+    
+input:-webkit-autofill,
+input:-webkit-autofill:hover, 
+input:-webkit-autofill:focus
+input:-webkit-autofill, 
+textarea:-webkit-autofill,
+textarea:-webkit-autofill:hover
+textarea:-webkit-autofill:focus,
+select:-webkit-autofill,
+select:-webkit-autofill:hover,
+select:-webkit-autofill:focus {
+ 	
+  -webkit-text-fill-color: black;
+  background:##ededed;
+  -webkit-box-shadow: 0 0 0px 1000px #ededed inset;
+  	
+}
+
+
+h1 {font-family: Segoe UI;font-weight: normal; margin-left:220px;font-size: 20px; }
+    
+input[type="password"]{padding: 8px 12px;
+	width:400px;font-family: Segoe UI; 
+    margin: 4px 0;
+    box-sizing: border-box;
+    
+    background:#ededed; 
+    
+    color: white;}
+    
+    
+    .ui-widget .ui-selectonemenu {background:transparent;}
+
+.select{padding: 6px 10px;font-family: Segoe UI; 
+	width:70%;
+  	background:transparent;
+    box-sizing: border-box;
+   
+    border:none;outline: none;
+     }	
+
+input[type="submit"]{
+	padding: 5px 10px;
+	font-family: Segoe UI;font-size:14px; 
+	width:400px;
+    margin: 4px 0;text-align:center;
+    box-sizing: border-box;
+    border: 1px solid #c0c0c0;
+    background:#ededed;border:none; 
+    background: #ed1f07;
+    color: white;}    
+   
+  input[type="submit"]:hover{background: white;
+    color: #ed1f07; border:none; 
+    border: 2px solid #f44336;box-shadow: 2px 2px 1px #888888;} 
+    
+	input[type="submit"]:focus{outline:none;}
+    
+
+
+.panelbb{font-family: Segoe UI;font-size:14px;}
+
+.logoutbtn{display:none; }
+  

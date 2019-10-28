@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:pe="http://primefaces.org/ui/extensions">
+
+
+	<p:dialog dynamic="false" id="content" widgetVar="contentDlg"
+		 header="Content" resizable="false">
+
+		<p:panel id="docUploadPanel" styleClass="panelZ">
+
+			<h:form id="uploadForm">
+				<p:fileUpload fileUploadListener="#{wfmasterMB.handleFileUpload}"
+					style="background:transparent;" cancelLabel="Cancel"
+					allowTypes="/(\.|\/)(doc|docx|xls|xlsx|pdf|txt|png|jpeg)$/"
+					sizeLimit="10000000" uploadLabel="Upload" mode="advanced"
+					multiple="false">
+
+				</p:fileUpload>
+			</h:form>
+
+			<p:panel id="uploadDetails" style="width:800px;border:none;">
+				<div class="ui-fluid">
+
+					<p:panelGrid columns="4"
+						columnClasses="ui-g-2,ui-g-4,ui-g-2,ui-g-4"
+						layout="grid" styleClass="ui-panelgrid-blank">
+						<h:outputText value="File Type" />
+						<p:selectOneMenu value="#{wfmasterMB.currentContent.type}"
+							autoWidth="false">
+							<f:selectItem itemLabel="Select One" itemValue="" />
+							<f:selectItem itemLabel="Company" itemValue="C" />
+							<f:selectItem itemLabel="Branch" itemValue="B" />
+							<f:selectItem itemLabel="Department" itemValue="D" />
+							<f:selectItem itemLabel="Employee" itemValue="E" />
+							<f:selectItem itemLabel="Other" itemValue="O" />
+							<p:ajax event="change" process="@this" partialSubmit="true"></p:ajax>
+						</p:selectOneMenu>
+
+
+						<h:outputText value="File Size" />
+						<h:outputText style="font-weight:600;"
+							value="#{wfmasterMB.currentContent.filesize}"></h:outputText>
+					</p:panelGrid>
+
+					<p:panelGrid columns="2"
+						columnClasses="ui-g-2,ui-g-10" layout="grid"
+						styleClass="ui-panelgrid-blank">
+
+						<h:outputText value="Name" />
+						<p:inputText style="font-weight:600;"
+							value="#{wfmasterMB.currentContent.filename}">
+							<p:ajax event="change" process="@this" partialSubmit="true"></p:ajax>
+						</p:inputText>
+
+						<h:outputText value="Reference" />
+						<p:inputText></p:inputText>
+
+					</p:panelGrid>
+				</div>
+			</p:panel>
+			<p:panelGrid>
+				<p:commandButton icon="fa fa-plus" value="Add to Contents" process="@this" actionListener="#{wfmasterMB.addDocToContents}"
+					styleClass="rightGridBtnZ" />
+			</p:panelGrid>
+		</p:panel>
+
+	</p:dialog> 
+	
+		
+
+
+
+</html>

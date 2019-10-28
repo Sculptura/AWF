@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:pe="http://primefaces.org/ui/extensions">
+
+<h:head>
+	<title>AWF</title>
+</h:head>
+
+<h:body>
+	<ui:include src="/secured/StepDefinition.xhtml" />
+	<ui:include src="/secured/WFMasterDefinition.xhtml" />
+	<ui:include src="/secured/DocumentDownload.xhtml" />
+	<ui:include src="/secured/UserSearch.xhtml" />
+
+	<h:form id="wfform">
+		<div class="ui-fluid">
+			<p:dataView var="wf" value="#{wfmasterMB.workflows}" columns="1"
+				gridIcon="pi pi-th-large" listIcon="pi pi-bars" layout="list"
+				rowIndexVar="wfRowNum" rows="6" paginator="true"
+				paginatorPosition="top" id="wftable">
+
+				<p:column rendered="false">#{wfRowNum+1}</p:column>
+				<p:dataViewListItem>
+
+					<p:commandLink id="stepLink" style="text-decoration: none;"
+						process="@this" actionListener="#{wfmasterMB.selectWorkflow(wf)}">
+
+
+						<p:panel>
+							<p:panelGrid columns="2" layout="grid"
+								columnClasses="ui-g-12 ui-md-6,ui-g-12 ui-md-6"
+								styleClass="ui-panelgrid-blank ui-fluid">
+
+								<p:panelGrid columns="2" layout="grid"
+									styleClass="ui-panelgrid-blank ui-fluid">
+
+									<h:outputText value="#{wfRowNum+1}. #{wf.title}"
+										style="font-size:16px;" />
+								</p:panelGrid>
+
+								<p:panelGrid columns="2" layout="grid"
+									columnClasses="ui-g-8 ui-md-3,ui-g-4 ui-md-9"
+									styleClass="ui-panelgrid-blank ui-fluid">
+									<h:outputText value="Due on"
+										style="text-decoration: none;color:#a7a7a7;" />
+									<h:outputText value="#{wf.enddate}"
+										style="text-decoration: none;color:#a7a7a7;">
+										<f:convertDateTime pattern="dd/MM/yyyy" />
+									</h:outputText>
+								</p:panelGrid>
+							</p:panelGrid>
+						</p:panel>
+
+
+
+						<p:panelGrid columns="2" layout="grid"
+							columnClasses="ui-g-11 ui-md-10,ui-g-12 ui-md-2"
+							styleClass="ui-panelgrid-blank ui-fluid">
+							<h:outputText value="#{wf.description}"></h:outputText>
+
+							<p:commandButton value="summary" process="@this"
+								actionListener="#{wfmasterMB.workflowSummary(wf)}" />
+						</p:panelGrid>
+
+						<p:panelGrid columns="4" layout="grid"
+							columnClasses="ui-g-4 ui-md-2,ui-g-8 ui-md-2,ui-g-4 ui-md-2,ui-g-8 ui-md-2"
+							styleClass="ui-panelgrid-blank ui-fluid"> 
+
+							<h:outputText value="Status :" />
+							<p:selectOneMenu value="#{wf.status}" disabled="true"
+								style="border:none;opacity:1;color:#606060;"
+								styleClass="notMenu">
+
+								<f:selectItems value="#{wfmasterMB.statusList}" var="status"
+									itemLabel="#{status.name}" itemValue="#{status.code}">
+
+								</f:selectItems>
+							</p:selectOneMenu>
+
+							<h:outputText value="Steps :" />
+							<h:outputText value="#{wf.stepcount}" style="font-weight:700;" />
+
+
+
+						</p:panelGrid>
+
+
+
+
+						<!-- summary -->
+						<p:panel id="summaryGrid" rendered="#{wf.showSummary}"
+							style="border:none;">
+							<p:panelGrid columns="2" layout="grid"
+								columnClasses="ui-g-8,ui-g-4"
+								styleClass="ui-panelgrid-blank ui-fluid">
+
+								<p:panelGrid columns="1" layout="grid"
+									styleClass="ui-panelgrid-blank ui-fluid">
+
+
+									<p:dataTable value="#{wf.distRefs}" var="ref">
+										<p:column headerText="Contributors" style="border:none;">
+
+											<h:outputText
+												rendered="#{ref.type.equals('U') ? true : false}"
+												value="#{ref.refname}"></h:outputText>
+
+										</p:column>
+									</p:dataTable>
+
+
+								</p:panelGrid>
+								<p:panelGrid columns="1" layout="grid"
+									styleClass="ui-panelgrid-blank ui-fluid">
+									<p:knob max="100" disabled="true" labelTemplate="{value}%"
+										lineCap="round" value="#{wf.percentage}" height="100"
+										width="100" foregroundColor="#9adb63" />
+
+									<h:panelGrid columns="2">
+										<h:outputText value="Rating" />
+										<p:rating value="#{wf.rating}">
+										</p:rating>
+									</h:panelGrid>
+								</p:panelGrid>
+
+							</p:panelGrid>
+						</p:panel>
+
+
+					</p:commandLink>
+					
+					<p:separator></p:separator>
+
+				</p:dataViewListItem>
+			</p:dataView>
+
+			<p:panelGrid columns="2" layout="grid" columnClasses="ui-g-6,ui-g-6"
+				styleClass="ui-panelgrid-blank ui-fluid">
+
+				<p:commandButton value="New" icon="fa fa-plus" process="@this"
+					actionListener="#{wfmasterMB.initiateWorkflow}" />
+				<p:commandButton value="Refresh" icon="fa fa-refresh"
+					process="@this" actionListener="#{wfmasterMB.fetchWorkflows}" />
+
+			</p:panelGrid>
+
+		</div>
+	</h:form>
+
+
+</h:body>
+</html>
